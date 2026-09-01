@@ -1,5 +1,4 @@
 import { save_types } from '../constants';
-import { config } from '../constants/config';
 import { api_base } from '../services/api/api-base';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
@@ -7,6 +6,7 @@ import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { isDbotRTL } from '../utils/workspace';
 import main_xml from './xml/main.xml';
+import default_bot_xml from './xml/phantom.xml';
 import { forgetAccumulatorsProposalRequest } from './accumulators-proposal-handler';
 import { loadBlockly } from './blockly';
 import DBotStore from './dbot-store';
@@ -170,14 +170,14 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
-                // Push main.xml to workspace and reset the undo stack.
+                // Push the default bot to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = window.Blockly.utils.idGenerator.genUid();
 
-                window.Blockly.derivWorkspace.strategy_to_load = main_xml;
-                window.Blockly.getMainWorkspace().strategy_to_load = main_xml;
+                window.Blockly.derivWorkspace.strategy_to_load = default_bot_xml;
+                window.Blockly.getMainWorkspace().strategy_to_load = default_bot_xml;
                 window.Blockly.getMainWorkspace().RTL = isDbotRTL();
 
-                let file_name = config().default_file_name;
+                let file_name = 'Phantom 👻';
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
